@@ -13,7 +13,7 @@ import java.util.function.IntPredicate;
 
 import javax.swing.event.MenuListener;
 
-public class Solution {
+public class Solution2 {
     //rubbish code
     public static int singleNumber(int[] nums) {
         for(int i = 0;i < nums.length;i++){
