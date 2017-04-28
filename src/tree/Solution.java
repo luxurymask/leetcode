@@ -5,13 +5,63 @@ import java.util.LinkedList;
 
 public class Solution {
 	
+	/**
+	 * member of 543.
+	 */
+	private static int depth = 0;
+	
+	/**
+	 * 543. Diameter of Binary Tree
+	 * @author liuxl.
+	 * Just like 563, compton_scatter's idea.
+	 * @param root
+	 * @return
+	 */
+	public int diameterOfBinaryTree(TreeNode root) {
+        postOrderTraverse(root);
+        return depth;
+    }
+	
+	/**
+	 * tool for 543.
+	 * @param root
+	 * @return
+	 */
+	public int postOrderTraverse(TreeNode root){
+		if(root == null){
+			return 0;
+		}
+		int leftDepth = postOrderTraverse(root.left);
+		int rightDepth = postOrderTraverse(root.right);
+		int depthSum = (leftDepth + rightDepth);
+		if(depth < depthSum){
+			depth = depthSum;
+		}
+		return (Math.max(leftDepth, rightDepth) + 1);
+	}
+	
+	/**
+	 * member of 563.
+	 * @author compton_scatter.
+	 */
 	private static int tilt = 0;
 	
+	/**
+	 * 563. Binary Tree Tilt
+	 * @author compton_scatter. 
+	 * @param root
+	 * @return
+	 */
 	public static int findTilt3(TreeNode root){
 		postTraverse(root);
 		return tilt;
 	}
 	
+	/**
+	 * tool for 563.
+	 * @author compton_scatter.
+	 * @param root
+	 */
 	public static int postTraverse(TreeNode root){
 		if(root == null) return 0;
 		int leftSum = postTraverse(root.left);
