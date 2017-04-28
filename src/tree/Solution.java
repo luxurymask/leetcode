@@ -1,14 +1,17 @@
 package tree;
 
 import java.util.Deque;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class Solution {
 	
 	/**
 	 * member of 543.
 	 */
-	private static int depth = 0;
+	private int depth = 0;
 	
 	/**
 	 * 543. Diameter of Binary Tree
@@ -193,12 +196,70 @@ public class Solution {
 		return sum;
 	}
 	
+	/**
+	 * members of 501.
+	 */
+	private static int max = 1;
+	private static int current = 0;
+	private static int lastAccess;
+    private static Set<Integer> resultSet = new HashSet<Integer>();
+    
+	/**
+	 * 501. Find Mode in Binary Search Tree
+	 * @param root
+	 * @return
+	 */
+	public static int[] findMode(TreeNode root) {
+		if(root == null){
+			return new int[0];
+		}
+		lastAccess = root.val;
+        infixTraverse(root);
+        if(current > max){
+        	resultSet.clear();
+        	resultSet.add(lastAccess);
+        }else if(current == max){
+        	resultSet.add(lastAccess);
+        }
+        int[] result = new int[resultSet.size()];
+        Iterator<Integer> iterator = resultSet.iterator();
+        for(int i = 0;i < resultSet.size();i++){
+        	result[i] = iterator.next();
+        }
+        return result;
+    }
+	
+	/**
+	 * tool for 501.
+	 * @param root
+	 */
+	public static void infixTraverse(TreeNode root){
+		if(root.left != null) infixTraverse(root.left);
+		if(root.val == lastAccess){
+			current++;
+		}else if(current > max){
+			resultSet.clear();
+			max = current;
+			current = 1;
+			resultSet.add(lastAccess);
+		}else if(current == max){
+			resultSet.add(lastAccess);
+			current = 1;
+		}else{
+			current = 1;
+		}
+		lastAccess = root.val;
+		if(root.right != null) infixTraverse(root.right);
+	}
+	
 	public static void main(String[] args){
 		TreeNode T = new TreeNode(1);
-		T.left = new TreeNode(2);
+		T.right = new TreeNode(2);
 //		T.right = new TreeNode(3);
 //		T.left.left = new TreeNode(4);
 //		T.right.right = new TreeNode(5);
-		System.out.println(findTilt3(T));
+		for(int i : findMode(T)){
+			System.out.println(i);
+		}
 	}
 }
