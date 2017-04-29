@@ -377,6 +377,34 @@ public class Solution {
 		return resultList;
 	}
 	
+	private int leftLeavesSum = 0;
+	
+	public void checkLeft(TreeNode root){
+		if(root.left == null && root.right == null){
+			leftLeavesSum += root.val;
+		}
+		if(root.left != null) checkLeft(root.left);
+		if(root.right != null) checkRight(root.right);
+	}
+	
+	public void checkRight(TreeNode root){
+		if(root.left != null) checkLeft(root.left);
+		if(root.right != null) checkRight(root.right);
+	}
+	
+	/**
+	 * 404. Sum of Left Leaves
+	 * @param root
+	 * @return
+	 */
+	public int sumOfLeftLeaves(TreeNode root){
+		if(root == null) return 0;
+		if(root.left != null) checkLeft(root.left);
+		if(root.right != null) checkRight(root.right);
+		return leftLeavesSum;
+	}
+	
+	
 	public static void main(String[] args){
 		TreeNode T = new TreeNode(new Integer[]{7,9,-8,-6,-4,null,null,7,-2,null,null,null,null,null,null,null,null,-6});
 		Solution s = new Solution();
