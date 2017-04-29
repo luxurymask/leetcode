@@ -12,6 +12,20 @@ import java.util.Set;
 public class Solution {
 	
 	/**
+	 * tool for 563.
+	 * @param root
+	 * @return
+	 */
+	public static int calculateTilt(TreeNode root){
+		if(root == null){
+			return 0;
+		}
+		int leftVal = (root.left == null) ? 0 : sumOfChildren(root.left);
+		int rightVal = (root.right == null) ? 0 : sumOfChildren(root.right);
+		return Math.abs(leftVal - rightVal);
+	}
+	
+	/**
 	 * 563. Binary Tree Tilt
 	 * rubbish solution.
 	 * @param root
@@ -39,20 +53,6 @@ public class Solution {
 	 * @param root
 	 * @return
 	 */
-	public static int calculateTilt(TreeNode root){
-		if(root == null){
-			return 0;
-		}
-		int leftVal = (root.left == null) ? 0 : sumOfChildren(root.left);
-		int rightVal = (root.right == null) ? 0 : sumOfChildren(root.right);
-		return Math.abs(leftVal - rightVal);
-	}
-	
-	/**
-	 * tool for 563.
-	 * @param root
-	 * @return
-	 */
 	public static int sumOfChildren(TreeNode root){
 		if(root == null){
 			return 0;
@@ -70,29 +70,6 @@ public class Solution {
 		return sum;
 	}
 	
-	/**
-	 * 563. Binary Tree Tilt
-	 * @param root
-	 * @return
-	 */
-	public static int findTilt2(TreeNode root){
-		if(root == null){
-			return 0;
-		}
-		adjustTree(root);
-		int tilt = 0;
-		Deque<TreeNode> stack = new LinkedList<TreeNode>();
-		stack.push(root);
-		TreeNode current = null;
-		while(!stack.isEmpty()){
-			current = stack.pop();
-			tilt += calculateTilt2(current);
-			if(current.left != null) stack.push(current.left);
-			if(current.right != null) stack.push(current.right);
-		}
-		return tilt;
-	}
-
 	/**
 	 * tool for 563.
 	 * @param root
@@ -135,22 +112,34 @@ public class Solution {
 	}
 	
 	/**
+	 * 563. Binary Tree Tilt
+	 * @param root
+	 * @return
+	 */
+	public static int findTilt2(TreeNode root){
+		if(root == null){
+			return 0;
+		}
+		adjustTree(root);
+		int tilt = 0;
+		Deque<TreeNode> stack = new LinkedList<TreeNode>();
+		stack.push(root);
+		TreeNode current = null;
+		while(!stack.isEmpty()){
+			current = stack.pop();
+			tilt += calculateTilt2(current);
+			if(current.left != null) stack.push(current.left);
+			if(current.right != null) stack.push(current.right);
+		}
+		return tilt;
+	}
+
+	/**
 	 * member of 563.
 	 * @author compton_scatter.
 	 */
 	private static int tilt = 0;
-	
-	/**
-	 * 563. Binary Tree Tilt
-	 * @author compton_scatter. 
-	 * @param root
-	 * @return
-	 */
-	public static int findTilt3(TreeNode root){
-		postTraverse(root);
-		return tilt;
-	}
-	
+
 	/**
 	 * tool for 563.
 	 * @author compton_scatter.
@@ -165,21 +154,20 @@ public class Solution {
 	}
 	
 	/**
-	 * member of 543.
-	 */
-	private int depth = 0;
-	
-	/**
-	 * 543. Diameter of Binary Tree
-	 * @author liuxl.
-	 * Just like 563, compton_scatter's idea.
+	 * 563. Binary Tree Tilt
+	 * @author compton_scatter. 
 	 * @param root
 	 * @return
 	 */
-	public int diameterOfBinaryTree(TreeNode root) {
-        postOrderTraverse(root);
-        return depth;
-    }
+	public static int findTilt3(TreeNode root){
+		postTraverse(root);
+		return tilt;
+	}
+	
+	/**
+	 * member of 543.
+	 */
+	private int depth = 0;
 	
 	/**
 	 * tool for 543.
@@ -200,6 +188,18 @@ public class Solution {
 	}
 	
 	/**
+	 * 543. Diameter of Binary Tree
+	 * @author liuxl.
+	 * Just like 563, compton_scatter's idea.
+	 * @param root
+	 * @return
+	 */
+	public int diameterOfBinaryTree(TreeNode root) {
+        postOrderTraverse(root);
+        return depth;
+    }
+	
+	/**
 	 * members of 501.
 	 */
 	private static int max = 1;
@@ -207,6 +207,29 @@ public class Solution {
 	private static int lastAccess;
     private static Set<Integer> resultSet = new HashSet<Integer>();
     
+    /**
+	 * tool for 501.
+	 * @param root
+	 */
+	public static void infixTraverse(TreeNode root){
+		if(root.left != null) infixTraverse(root.left);
+		if(root.val == lastAccess){
+			current++;
+		}else if(current > max){
+			resultSet.clear();
+			max = current;
+			current = 1;
+			resultSet.add(lastAccess);
+		}else if(current == max){
+			resultSet.add(lastAccess);
+			current = 1;
+		}else{
+			current = 1;
+		}
+		lastAccess = root.val;
+		if(root.right != null) infixTraverse(root.right);
+	}
+	
 	/**
 	 * 501. Find Mode in Binary Search Tree
 	 * @param root
@@ -233,29 +256,6 @@ public class Solution {
     }
 	
 	/**
-	 * tool for 501.
-	 * @param root
-	 */
-	public static void infixTraverse(TreeNode root){
-		if(root.left != null) infixTraverse(root.left);
-		if(root.val == lastAccess){
-			current++;
-		}else if(current > max){
-			resultSet.clear();
-			max = current;
-			current = 1;
-			resultSet.add(lastAccess);
-		}else if(current == max){
-			resultSet.add(lastAccess);
-			current = 1;
-		}else{
-			current = 1;
-		}
-		lastAccess = root.val;
-		if(root.right != null) infixTraverse(root.right);
-	}
-	
-	/**
 	 * 112. Path Sum
 	 * @author  boy27910230.
 	 * @param root
@@ -267,6 +267,32 @@ public class Solution {
         if(root.left == null && root.right == null && root.val == sum) return true;
         return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
     }
+	
+	/**
+	 * tool for 113.
+	 * @param list
+	 * @return
+	 */
+	public int sumList(List<Integer> list){
+		int sum = 0;
+		for(int i : list){
+			sum += i;
+		}
+		return sum;
+	}
+	
+	/**
+	 * tool for 113.
+	 * @param list
+	 * @return
+	 */
+	public List<Integer> copyList(List<Integer> list){
+		List<Integer> copy = new ArrayList<Integer>();
+		for(int i : list){
+			copy.add(i);
+		}
+		return copy;
+	}
 	
 	/**
 	 * 113. Path Sum II.
@@ -317,29 +343,38 @@ public class Solution {
     }
 	
 	/**
-	 * tool for 113.
-	 * @param list
-	 * @return
+	 * member of 113.
+	 * @author xuhua.alex & wdj0xda.
 	 */
-	public int sumList(List<Integer> list){
-		int sum = 0;
-		for(int i : list){
-			sum += i;
-		}
-		return sum;
-	}
+	private List<List<Integer>> resultList = new ArrayList<List<Integer>>();
 	
 	/**
 	 * tool for 113.
-	 * @param list
+	 * @author xuhua.alex & wdj0xda.
+	 * @param root
+	 * @param sum
+	 * @param stack
+	 */
+	public void pathSum2(TreeNode root, int sum, List<Integer> list){
+		list.add(root.val);
+		if(root.left == null && root.right == null && root.val == sum) resultList.add(new ArrayList<Integer>(list));
+		if(root.left != null) pathSum2(root.left, sum - root.val, list);
+		if(root.right != null) pathSum2(root.right, sum - root.val, list);
+		list.remove(list.size() - 1);
+	}
+	
+	/**
+	 * 113. Path Sum II.
+	 * @author xuhua.alex & wdj0xda.
+	 * @param root
+	 * @param sum
 	 * @return
 	 */
-	public List<Integer> copyList(List<Integer> list){
-		List<Integer> copy = new ArrayList<Integer>();
-		for(int i : list){
-			copy.add(i);
-		}
-		return copy;
+	public List<List<Integer>> pathSum2(TreeNode root, int sum) {
+		if(root == null) return resultList;
+		List<Integer> list = new ArrayList<Integer>();
+		pathSum2(root, sum, list);
+		return resultList;
 	}
 	
 	public static void main(String[] args){
