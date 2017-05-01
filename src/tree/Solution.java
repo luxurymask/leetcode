@@ -404,6 +404,51 @@ public class Solution {
 		return leftLeavesSum;
 	}
 	
+	/**
+	 * tool for 257
+	 * @author liuxl vimukthi.
+	 * @param root
+	 * @param path
+	 * @param resultList
+	 */
+	public void binaryTreePaths(TreeNode root, String path, List<String> resultList){
+		if(root.left == null && root.right == null) resultList.add(path + root.val);
+		if(root.left != null) binaryTreePaths(root.left, path + root.left.val + "->", resultList);
+		if(root.right != null) binaryTreePaths(root.right, path + root.right.val + "->", resultList);
+	}
+	
+	/**
+	 * 257. Binary Tree Paths
+	 * @author vimukthi.
+	 * @param root
+	 * @return
+	 */
+	public List<String> binaryTreePaths(TreeNode root) {
+		List<String> resultList = new ArrayList<String>();
+		if(root != null) binaryTreePaths(root, "", resultList);
+		return resultList;
+    }
+	
+	/**
+	 * 226. Invert Binary Tree
+	 * This problem was inspired by this original tweet by Max Howell: 
+	 * Google: 90% of our engineers use the software you wrote (Homebrew), but you can’t invert a binary tree on a whiteboard so fuck off.
+	 * @author liuxl
+	 * @param root
+	 * @return
+	 */
+	public TreeNode invertTree(TreeNode root) {
+		if(root == null) return null;
+		TreeNode temp;
+		if(root.left != null || root.right != null){
+			temp = root.left;
+			root.left = root.right;
+			root.right = temp;
+		}
+		if(root.left != null) invertTree(root.left);
+		if(root.right != null) invertTree(root.right);
+		return root;
+	}
 	
 	public static void main(String[] args){
 		TreeNode T = new TreeNode(new Integer[]{7,9,-8,-6,-4,null,null,7,-2,null,null,null,null,null,null,null,null,-6});
