@@ -1,12 +1,12 @@
 package tree;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 public class Solution {
@@ -450,14 +450,171 @@ public class Solution {
 		return root;
 	}
 	
-	public static void main(String[] args){
-		TreeNode T = new TreeNode(new Integer[]{7,9,-8,-6,-4,null,null,7,-2,null,null,null,null,null,null,null,null,-6});
-		Solution s = new Solution();
-		List<List<Integer>> listt = s.pathSum(T, 12);
-		for(List<Integer> list : listt){
-			for(int i : list){
-				System.out.print(i + " ");
+	/**
+	 * 100. Same Tree
+	 * @author micheal.zhou.
+	 * 聪明的写法。
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public boolean isSameTree2(TreeNode p, TreeNode q){
+		if(p == null && q == null){
+			return true;
+		}
+		
+		if(p == null || q == null){
+			return false;
+		}
+		
+		return p.val == q.val && isSameTree2(p.left, q.left) && isSameTree2(p.right, q.right);
+	}
+	
+	/**
+	 * 100. Same Tree
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null){
+            if(q != null) return false;
+            return true;
+        }
+        
+        if(q == null){
+        	if(p != null) return false;
+        }
+        
+        if(p.val == q.val) {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }else{
+            return false;
+        }
+    }
+	
+	/**
+	 * Tool for 102.
+	 * TLE.
+	 * @param queue
+	 * @return
+	 */
+	public boolean containsOnlyNull(Queue<TreeNode> queue){
+		Iterator<TreeNode> iterator = queue.iterator();
+		while(iterator.hasNext()){
+			TreeNode node = iterator.next();
+			if(node != null){
+				return false;
 			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 102. Binary Tree Level Order Traversal
+	 * TLE.
+	 * @param root
+	 * @return
+	 */
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		List<List<Integer>> resultList = new ArrayList<List<Integer>>();
+		List<Integer> list;
+		queue.add(root);
+		for(int i = 0;!containsOnlyNull(queue);i++){
+			list = new ArrayList<Integer>();
+			for(int j = 1;j <= Math.pow(2, i) && !queue.isEmpty();j++){
+				TreeNode current = queue.poll();
+				if(current != null){
+					list.add(current.val);
+					queue.add(current.left);
+					queue.add(current.right);
+				}else{
+					queue.add(null);
+					queue.add(null);
+				}
+			}
+			if(list.size() != 0) resultList.add(list);
+		}
+        return resultList;
+    }
+	
+	/**
+	 * 102. Binary Tree Level Order Traversal
+	 * @author SOY
+	 * @param root
+	 * @return
+	 */
+	public List<List<Integer>> levelOrder2(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		List<List<Integer>> resultList = new ArrayList<List<Integer>>();
+		List<Integer> list;
+		queue.add(root);
+		while(!queue.isEmpty()){
+			list = new ArrayList<Integer>();
+			int levelSize = queue.size();
+			for(int j = 0;j < levelSize;j++){
+				TreeNode current = queue.poll();
+				if(current != null){
+					list.add(current.val);
+					queue.add(current.left);
+					queue.add(current.right);
+				}
+			}
+			if(list.size() != 0) resultList.add(list);
+		}
+        return resultList;
+    }
+	
+	/**
+	 * 515. Find Largest Value in Each Tree Row
+	 * similar as 102.
+	 * @param root
+	 * @return
+	 */
+	public List<Integer> largestValues(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<Integer> resultList = new ArrayList<Integer>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+        	int rowSize = queue.size();
+        	int max = Integer.MIN_VALUE;
+        	TreeNode current = null;
+        	boolean flag = false;
+        	for(int i = 0;i < rowSize;i++){
+        		current = queue.poll();
+        		if(current != null){
+        			flag = true;
+        			queue.add(current.left);
+        			queue.add(current.right);
+        			if(current.val > max){
+        				max = current.val;
+        			}
+        		}
+        	}
+        	if(flag == true) resultList.add(max);
+        }
+        return resultList;
+    }
+	
+	public static void main(String[] args){
+		Character c = 'c';
+		Character d = 'c';
+		Character e = new Character('c');
+		Character f = new Character('d');
+		String s1 = "cc";
+		String ss = "cc";
+		String sss = new String("cc");
+		String ssss = new String("cc");
+		System.out.println(c == d);
+		System.out.println(e == f);
+		System.out.println(s1 == ss);
+		System.out.println(sss == ssss);
+		TreeNode T = new TreeNode(new Integer[]{1, 1});
+		Solution s = new Solution();
+		List<Integer> listt = s.largestValues(T);
+		for(int i : listt){
+			System.out.print(i + " ");
 		}
 	}
 }
