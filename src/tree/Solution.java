@@ -597,24 +597,117 @@ public class Solution {
         return resultList;
     }
 	
+	/**
+	 * 235. Lowest Common Ancestor of a Binary Search Tree
+	 * @author FrankBian
+	 * @param root
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || p == null || q == null) return null;
+        if(root.val > Math.max(p.val, q.val)) return lowestCommonAncestor(root.left, p, q);
+        if(root.val < Math.min(p.val, q.val)) return lowestCommonAncestor(root.right, p, q);
+        return root;
+    }
+	
+	/**
+	 * tool for 110 isBalancedRubbish.
+	 * @param root
+	 * @return
+	 */
+	public int height(TreeNode root){
+		if(root == null) return 0;
+		return Math.max(height(root.left), height(root.right)) + 1;
+	}
+	
+	/**
+	 * 110. Balanced Binary Tree
+	 * rubbish, too much revisit.
+	 * @param root
+	 * @return
+	 */
+	public boolean isBalancedRubbish(TreeNode root) {
+		if(root == null) return true;
+        return (Math.abs(height(root.left) - height(root.right)) <= 1) && isBalancedRubbish(root.left) && isBalancedRubbish(root.right);
+    }
+	
+	/**
+	 * tool for 110.
+	 * @author !liuxl
+	 * 思想：求高度的时候带入不平衡信息并且一路传回root，最后在调用处只需判断root而不需要进行重复遍历。
+	 * @param root
+	 * @return
+	 */
+	public int dfsHeight(TreeNode root){
+		if(root == null) return 0;
+		int leftHeight = dfsHeight(root.left);
+		if(leftHeight == -1) return -1;
+		int rightHeight = dfsHeight(root.right);
+		if(rightHeight == -1) return -1;
+		if(Math.abs(leftHeight - rightHeight) > 1) return -1;
+		return Math.max(leftHeight, rightHeight) + 1;
+	}
+	
+	/**
+	 * 110. Balanced Binary Tree
+	 * @author !liuxl.
+	 * @param root
+	 * @return
+	 */
+	public boolean isBalanced(TreeNode root){
+		if(root == null) return true;
+		return (dfsHeight(root) != -1);
+	}
+	
+	/**
+	 * 101. Symmetric Tree
+	 * @author liuxl
+	 * @param root
+	 * @return
+	 */
+	public boolean isSymmetric(TreeNode root) {
+        Deque<TreeNode> leftStack = new LinkedList<TreeNode>();
+        Deque<TreeNode> rightStack = new LinkedList<TreeNode>();
+        if(root == null || (root.left == null && root.right == null)) return true;
+        if(root.left == null || root.right == null) return false;
+        leftStack.push(root.left);
+        rightStack.push(root.right);
+        while(!leftStack.isEmpty() && !rightStack.isEmpty()){
+        	TreeNode left = leftStack.pop();
+        	TreeNode right = rightStack.pop();
+        	if(left.val != right.val) return false;
+        	if((left.left == null && right.right != null) || (left.right == null && right.left != null) || (left.left != null && right.right == null) || (left.right != null && right.left == null)) return false;
+        	if(left.left != null) leftStack.push(left.left);
+        	if(right.right != null) rightStack.push(right.right);
+        	if(left.right != null) leftStack.push(left.right);
+        	if(right.left != null) rightStack.push(right.left);
+        }
+        if(!leftStack.isEmpty() || !rightStack.isEmpty()) return false;
+        return true;
+    }
+	
+	public boolean helper(TreeNode left, TreeNode right){
+		if(left == null || right == null) return left == right;
+		if(left.val != right.val) return false;
+		return helper(left.left, right.right) && helper(left.right, right.left);
+	}
+	
+	/**
+	 * 101. Symmetric Tree
+	 * @author !liuxl
+	 * @param root
+	 * @return
+	 */
+	public boolean isSymmetric2(TreeNode root){
+		if(root == null) return true;
+		return helper(root.left, root.right);
+	}
+	
 	public static void main(String[] args){
-		Character c = 'c';
-		Character d = 'c';
-		Character e = new Character('c');
-		Character f = new Character('d');
-		String s1 = "cc";
-		String ss = "cc";
-		String sss = new String("cc");
-		String ssss = new String("cc");
-		System.out.println(c == d);
-		System.out.println(e == f);
-		System.out.println(s1 == ss);
-		System.out.println(sss == ssss);
-		TreeNode T = new TreeNode(new Integer[]{1, 1});
-		Solution s = new Solution();
-		List<Integer> listt = s.largestValues(T);
-		for(int i : listt){
-			System.out.print(i + " ");
-		}
+		Solution solution = new Solution();
+		TreeNode root = new TreeNode(new Integer[]{2, 3, 3, 4, 5, 5, 4, 6, null, 8, 9, 9, 8, 6, null});
+		System.out.println(solution.isSymmetric(root));
 	}
 }

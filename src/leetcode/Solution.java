@@ -995,6 +995,28 @@ public class Solution {
         return sum + "";
     }
 	
+	public RandomListNode copyRandomList(RandomListNode head) {
+		if(head == null) return null;
+        RandomListNode newHead = new RandomListNode(head.label);
+        RandomListNode p = head, q = newHead;
+        Map<RandomListNode, RandomListNode> map = new HashMap<RandomListNode, RandomListNode>();
+        while(p != null){
+        	map.put(p, q);
+        	q.next = (p.next == null ? null : new RandomListNode(p.next.label));
+        	p = p.next;
+        	q = q.next;
+        }
+        
+        p = head;
+        q = newHead;
+        while(p != null){
+        	q.random = map.get(p.random);
+        	p = p.next;
+        	q = q.next;
+        }
+        return newHead;
+    }
+	
 	public static void main(String[] args) {
 		ListNode head = getHead();
 		reorderList2(head);
