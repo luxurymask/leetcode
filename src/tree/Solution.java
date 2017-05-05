@@ -605,7 +605,7 @@ public class Solution {
 	 * @param q
 	 * @return
 	 */
-	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+	public TreeNode lowestCommonAncestorBST(TreeNode root, TreeNode p, TreeNode q) {
         if(root == null || p == null || q == null) return null;
         if(root.val > Math.max(p.val, q.val)) return lowestCommonAncestor(root.left, p, q);
         if(root.val < Math.min(p.val, q.val)) return lowestCommonAncestor(root.right, p, q);
@@ -688,6 +688,13 @@ public class Solution {
         return true;
     }
 	
+	/**
+	 * tool for 101.
+	 * @author !liuxl
+	 * @param left
+	 * @param right
+	 * @return
+	 */
 	public boolean helper(TreeNode left, TreeNode right){
 		if(left == null || right == null) return left == right;
 		if(left.val != right.val) return false;
@@ -726,6 +733,21 @@ public class Solution {
         List<List<Integer>> resultList = new ArrayList(stack);
         return resultList;
     }
+	
+	/**
+	 * 236. Lowest Common Ancestor of a Binary Tree
+	 * @author issac3
+	 * @param root
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
+		if(root == null || root == p || root == q) return root;
+		TreeNode left = lowestCommonAncestor(root.left, p, q);
+		TreeNode right = lowestCommonAncestor(root.right, p, q);
+		return (left != null && right != null) ? root : ((left == null) ? right : left);
+	}
 	
 	public static void main(String[] args){
 		Solution solution = new Solution();
