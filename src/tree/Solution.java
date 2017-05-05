@@ -705,9 +705,31 @@ public class Solution {
 		return helper(root.left, root.right);
 	}
 	
+	public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        Deque<List<Integer>> stack = new LinkedList<List<Integer>>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if(root == null) return new ArrayList();
+        queue.add(root);
+        TreeNode current;
+    	List<Integer> list;
+        while(!queue.isEmpty()){
+        	int layerSize = queue.size();
+        	list = new ArrayList<Integer>();
+        	for(int i = 0;i < layerSize;i++){
+            	current = queue.poll();
+            	list.add(current.val);
+            	if(current.left != null) queue.add(current.left);
+            	if(current.right != null) queue.add(current.right);
+        	}
+        	stack.push(list);
+        }
+        List<List<Integer>> resultList = new ArrayList(stack);
+        return resultList;
+    }
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
-		TreeNode root = new TreeNode(new Integer[]{2, 3, 3, 4, 5, 5, 4, 6, null, 8, 9, 9, 8, 6, null});
-		System.out.println(solution.isSymmetric(root));
+		TreeNode root = new TreeNode(new Integer[]{3,9,20,null,null,15,7});
+		System.out.println(solution.levelOrderBottom(root));
 	}
 }
