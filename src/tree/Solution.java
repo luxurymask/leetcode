@@ -749,6 +749,39 @@ public class Solution {
 		return (left != null && right != null) ? root : ((left == null) ? right : left);
 	}
 	
+	/**
+	 * tool for 572.
+	 * @param s
+	 * @param t
+	 * @return
+	 */
+	public boolean hasSameStructure(TreeNode s, TreeNode t){
+		if(s == null && t == null) return true;
+		if(s == null || t == null || s.val != t.val) return false;
+		if(s == null || s.val != t.val) return false;
+		return hasSameStructure(s.left, t.left) && hasSameStructure(s.right, t.right);
+	}
+	
+	/**
+	 * 572. Subtree of Another Tree
+	 * almost same as poketheoffer HasSubTree.
+	 * @param s
+	 * @param t
+	 * @return
+	 */
+	public boolean isSubtree(TreeNode s, TreeNode t) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        TreeNode current;
+        queue.add(s);
+        while(!queue.isEmpty()){
+        	current = queue.poll();
+        	if(current.val == t.val && hasSameStructure(current, t)) return true;
+        	if(current.left != null) queue.add(current.left);
+        	if(current.right != null) queue.add(current.right);
+        }
+        return false;
+    }
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{3,9,20,null,null,15,7});
