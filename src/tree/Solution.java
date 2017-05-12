@@ -758,7 +758,6 @@ public class Solution {
 	public boolean hasSameStructure(TreeNode s, TreeNode t){
 		if(s == null && t == null) return true;
 		if(s == null || t == null || s.val != t.val) return false;
-		if(s == null || s.val != t.val) return false;
 		return hasSameStructure(s.left, t.left) && hasSameStructure(s.right, t.right);
 	}
 	
@@ -781,6 +780,20 @@ public class Solution {
         }
         return false;
     }
+	
+	/**
+	 * 572. Subtree of Another Tree
+	 * 递归实现。
+	 * @param s
+	 * @param t
+	 * @return
+	 */
+	public boolean isSubtreeRecursively(TreeNode s, TreeNode t){
+		if(t == null) return true;
+		if(s == null) return false;
+		if(s.val == t.val && hasSameStructure(s, t)) return true;
+		return isSubtreeRecursively(s.left, t) || isSubtreeRecursively(s.right, t);
+	}
 	
 	public static void main(String[] args){
 		Solution solution = new Solution();
