@@ -827,7 +827,42 @@ public class Solution {
         }
         return resultList;
     }
-
+	
+	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> resultList = new ArrayList<List<Integer>>();
+        List<Integer> list = null;
+        int count = 0;
+        Deque<Integer> stack = null;
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if(root == null) return resultList;
+        queue.add(root);
+        TreeNode current;
+        while(!queue.isEmpty()){
+        	int layerSize = queue.size();
+        	if(count % 2 == 0){
+        		list = new ArrayList<Integer>();
+        		for(int i = 0;i < layerSize;i++){
+        			current = queue.poll();
+        			list.add(current.val);
+        			if(current.left != null) queue.add(current.left);
+        			if(current.right != null) queue.add(current.right);
+        		}
+        	}else{
+        		stack = new LinkedList<Integer>();
+        		for(int i = 0;i < layerSize;i++){
+        			current = queue.poll();
+        			stack.push(current.val);
+        			if(current.left != null) queue.add(current.left);
+        			if(current.right != null) queue.add(current.right);
+        		}
+        		list = new ArrayList<Integer>(stack);
+        	}
+        	count++;
+        	resultList.add(list);
+        }
+        return resultList;
+    }
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{3,9,20,null,null,15,7});
