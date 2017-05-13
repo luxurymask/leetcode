@@ -813,6 +813,11 @@ public class Solution {
 		return current.val;
     }
 	
+	/**
+	 * 144. Binary Tree Preorder Traversal
+	 * @param root
+	 * @return
+	 */
 	public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> resultList = new ArrayList<Integer>();
         Deque<TreeNode> stack = new LinkedList<TreeNode>();
@@ -828,6 +833,12 @@ public class Solution {
         return resultList;
     }
 	
+	/**
+	 * 103. Binary Tree Zigzag Level Order Traversal
+	 * @author liuxl
+	 * @param root
+	 * @return
+	 */
 	public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> resultList = new ArrayList<List<Integer>>();
         List<Integer> list = null;
@@ -863,9 +874,39 @@ public class Solution {
         return resultList;
     }
 	
+	/**
+	 * member of 230.
+	 */
+	private int count = 0;
+	private int result = -1;
+	
+	/**
+	 * tool for 230.
+	 * @param root
+	 * @param k
+	 */
+	public void helper(TreeNode root, int k){
+		if(root.left != null) helper(root.left, k);
+        if(++count == k) {
+        	result = root.val;
+        }
+        if(root.right != null) helper(root.right, k);
+	}
+	
+	/**
+	 * 230. Kth Smallest Element in a BST
+	 * @param root
+	 * @param k
+	 * @return
+	 */
+	public int kthSmallest(TreeNode root, int k) {
+        helper(root, k);
+        return result;
+    }
+
 	public static void main(String[] args){
 		Solution solution = new Solution();
-		TreeNode root = new TreeNode(new Integer[]{3,9,20,null,null,15,7});
-		System.out.println(solution.levelOrderBottom(root));
+		TreeNode root = new TreeNode(new Integer[]{1, null, 2});
+		System.out.println(solution.kthSmallest(root, 2));
 	}
 }
