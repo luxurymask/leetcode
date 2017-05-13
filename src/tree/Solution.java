@@ -813,6 +813,21 @@ public class Solution {
 		return current.val;
     }
 	
+	public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> resultList = new ArrayList<Integer>();
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        if(root == null) return resultList;
+        stack.push(root);
+        TreeNode current;
+        while(!stack.isEmpty()){
+        	current = stack.pop();
+        	resultList.add(current.val);
+        	if(current.right != null) stack.push(current.right);
+        	if(current.left != null) stack.push(current.left);
+        }
+        return resultList;
+    }
+
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{3,9,20,null,null,15,7});
