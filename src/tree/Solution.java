@@ -2,10 +2,12 @@ package tree;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -715,7 +717,7 @@ public class Solution {
 	public List<List<Integer>> levelOrderBottom(TreeNode root) {
         Deque<List<Integer>> stack = new LinkedList<List<Integer>>();
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        if(root == null) return new ArrayList();
+        if(root == null) return new ArrayList<>();
         queue.add(root);
         TreeNode current;
     	List<Integer> list;
@@ -730,7 +732,7 @@ public class Solution {
         	}
         	stack.push(list);
         }
-        List<List<Integer>> resultList = new ArrayList(stack);
+        List<List<Integer>> resultList = new ArrayList<>(stack);
         return resultList;
     }
 	
@@ -944,7 +946,61 @@ public class Solution {
 		}
 		return root;
     }
+	
+	/**
+	 * 582. Kill Process
+	 * rubbish way.
+	 * @author liuxl
+	 * @param pid
+	 * @param ppid
+	 * @param kill
+	 * @return
+	 */
+	public List<Integer> killProcess(List<Integer> pid, List<Integer> ppid, int kill) {
+        Map<Integer, List<Integer>> ppidPidMap = new HashMap<>();
+        List<Integer> resultList = new ArrayList<>();
+        for(int i = 0;i < ppid.size();i++){
+        	int ppidNum = ppid.get(i);
+        	List<Integer> list = ppidPidMap.getOrDefault(ppidNum, new ArrayList<>());
+    		list.add(pid.get(i));
+        	ppidPidMap.put(ppidNum, list);
+        }
+        
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(kill);
+        int current;
+        while(!queue.isEmpty()){
+        	current = queue.poll();
+        	resultList.add(current);
+        	if(ppidPidMap.containsKey(current)){
+        		List<Integer> list = ppidPidMap.get(current);
+        		for(int i : list){
+            		queue.add(i);
+            	}
+        	}
+        }
+        return resultList;
+    }
 
+	/**
+	 * 582. Kill Process
+	 * Genius way.(But TLE when there are too many leaves.)
+	 * @author !liuxl
+	 * @param pid
+	 * @param ppid
+	 * @param kill
+	 * @return
+	 */
+	public List<Integer> killProcessRecursively(List<Integer> pid, List<Integer> ppid, int kill) {
+		List<Integer> result = new ArrayList<Integer>();
+		if(kill == 0) return pid;
+		result.add(kill);
+		for(int i = 0;i < ppid.size() && ppid.contains(kill);i++){
+			if(ppid.get(i) == kill) result.addAll(killProcessRecursively(pid, ppid, pid.get(i)));
+		}
+		return result;
+	}
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{1, null, 2});
