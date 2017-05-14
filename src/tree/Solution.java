@@ -917,6 +917,33 @@ public class Solution {
         if(root.right == null) return minDepth(root.left) + 1;
         return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
     }
+	
+	public TreeNode findMin(TreeNode root){
+		while(root != null && root.left != null) root = root.left;
+		return root;
+	}
+	
+	/**
+	 * 450. Delete Node in a BST
+	 * Binary Search Tree的删除.
+	 * @param root
+	 * @param key
+	 * @return
+	 */
+	public TreeNode deleteNode(TreeNode root, int key) {
+		if(root == null) return root;
+		if(key > root.val){
+			root.right = deleteNode(root.right, key);
+		}else if(key < root.val){
+			root.left = deleteNode(root.left, key);
+		}else if(root.left != null && root.right != null){
+			root.val = findMin(root.right).val;
+			root.right = deleteNode(root.right, root.val);
+		}else{
+			root = (root.left == null) ? root.right : root.left;
+		}
+		return root;
+    }
 
 	public static void main(String[] args){
 		Solution solution = new Solution();
