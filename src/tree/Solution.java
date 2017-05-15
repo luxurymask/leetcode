@@ -1138,10 +1138,47 @@ public class Solution {
         }
         return result;
     }
-
+	
+	public TreeNode adjustTreeToSum(TreeNode root, Map<Integer, Integer> frequencyMap){
+		if(root == null) return null;
+		if(root.left != null) root.left = adjustTreeToSum(root.left, frequencyMap);
+		if(root.right != null) root.right = adjustTreeToSum(root.right, frequencyMap);
+		root.val += (((root.left == null) ? 0 : root.left.val) + ((root.right == null) ? 0 : root.right.val));
+		frequencyMap.put(root.val, frequencyMap.getOrDefault(root.val, 0) + 1);
+		return root;
+	}
+	
+	public int[] findFrequentTreeSum(TreeNode root) {
+		Map<Integer, Integer> frequencyMap = new HashMap<Integer, Integer>();
+		root = adjustTreeToSum(root, frequencyMap);
+		List<Integer> list = new ArrayList<>();
+		int maxFrequency = 0;
+		for(Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()){
+			int sum = entry.getKey();
+			int frequency = entry.getValue();
+			if(frequency == maxFrequency){
+				list.add(sum);
+			}else if(frequency > maxFrequency){
+				list.clear();
+				list.add(sum);
+				maxFrequency = frequency;
+			}
+		}
+		int[] result = new int[list.size()];
+		for(int i = 0;i < list.size();i++){
+			result[i] = list.get(i);
+		}
+		return result;
+	}
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
-		TreeNode root = new TreeNode(new Integer[]{1, null, 2});
-		System.out.println(solution.kthSmallest(root, 2));
+		TreeNode root = new TreeNode(5);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(-3);
+		int[] result = solution.findFrequentTreeSum(root);
+		for(int i : result){
+			System.out.println(i);
+		}
 	}
 }
