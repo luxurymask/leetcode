@@ -1001,6 +1001,88 @@ public class Solution {
 		return result;
 	}
 	
+	/**
+	 * 98. Validate Binary Search Tree
+	 * infixOrderTraverse.
+	 * @param root
+	 * @return
+	 */
+	public boolean isValidBSTNoneRecursively(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        TreeNode current = root;
+        TreeNode pre = null;
+        while(current != null || !stack.isEmpty()){
+        	while(current != null){
+        		stack.push(current);
+        		current = current.left;
+        	}
+        	
+        	if(!stack.isEmpty()){
+            	current = stack.pop();
+            	if(pre != null && pre.val >= current.val) return false;
+            	pre = current;
+            	current = current.right;
+        	}
+        }
+        return true;
+    }
+	
+	/**
+	 * tool for 98.
+	 * @author !liuxl
+	 * @param root
+	 * @param minValue
+	 * @param maxValue
+	 * @return
+	 */
+	public boolean isValidBST(TreeNode root, long minValue, long maxValue){
+		if(root == null) return true;
+		if(root.val <= minValue || root.val >= maxValue) return false;
+		return isValidBST(root.left, minValue, root.val) && isValidBST(root.right, root.val, maxValue);
+	}
+	
+	/**
+	 * 98. Validate Binary Search Tree
+	 * recursive solution.
+	 * @author !liuxl
+	 * @param root
+	 * @param minValue
+	 * @param maxValue
+	 * @return
+	 */
+	public boolean isValidBST(TreeNode root) {
+		return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+	}
+	
+	/**
+	 * tool for 108.
+	 * @author liuxl
+	 * @param nums
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public TreeNode sortedArrayToBST(int[] nums, int start, int end) {
+		if(start > end) return null;
+        int mid = start + (end - start) / 2;
+        int val = nums[mid];
+        TreeNode root = new TreeNode(val);
+        root.left = sortedArrayToBST(nums, start, mid - 1);
+        root.right = sortedArrayToBST(nums, mid + 1, end);
+        return root;
+    }
+	
+	/**
+	 * 108. Convert Sorted Array to Binary Search Tree
+	 * @author liuxl
+	 * @param nums
+	 * @return
+	 */
+	public TreeNode sortedArrayToBST(int[] nums) {
+		if(nums.length == 0) return null;
+        return sortedArrayToBST(nums, 0, nums.length - 1);
+    }
+	
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{1, null, 2});
