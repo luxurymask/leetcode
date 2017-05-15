@@ -1,6 +1,7 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1083,6 +1084,61 @@ public class Solution {
         return sortedArrayToBST(nums, 0, nums.length - 1);
     }
 	
+	/**
+	 * tool for 508.
+	 * rubbish solution!!!!!
+	 * @author liuxl
+	 * @param root
+	 * @return
+	 */
+	public TreeNode adjustTreeToSumRubbish(TreeNode root){
+		if(root == null || (root.left == null && root.right == null)) return root;
+		TreeNode left, right;
+		root.val += ((((left = adjustTreeToSumRubbish(root.left)) == null) ? 0 : left.val) + (((right = adjustTreeToSumRubbish(root.right)) == null) ? 0 : right.val));
+		return root;
+	}
+	
+	/**
+	 * 508. Most Frequent Subtree Sum
+	 * rubbish solution!!!!!!!!!!!!!!
+	 * @author liuxl
+	 * @param root
+	 * @return
+	 */
+	public int[] findFrequentTreeSumRubbish(TreeNode root) {
+        root = adjustTreeToSumRubbish(root);
+        Map<Integer, Integer> frequencyMap = new HashMap<Integer, Integer>();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if(root == null) return new int[0];
+        queue.add(root);
+        TreeNode current;
+        while(!queue.isEmpty()){
+        	current = queue.poll();
+        	frequencyMap.put(current.val, frequencyMap.getOrDefault(current.val, 0) + 1);
+        	if(current.left != null) queue.add(current.left);
+        	if(current.right != null) queue.add(current.right);
+        }
+        List<Integer> list = new ArrayList<>();
+        int maxFrequency = 0;
+        for(Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()){
+        	int sum = entry.getKey();
+        	int frequency = entry.getValue();
+        	if(frequency == maxFrequency){
+        		list.add(sum);
+        	}else if(frequency > maxFrequency){
+        		list.clear();
+        		list.add(sum);
+        		maxFrequency = frequency;
+        	}
+        }
+        
+        int[] result = new int[list.size()];
+        for(int i = 0;i < list.size();i++){
+        	result[i] = list.get(i);
+        }
+        return result;
+    }
+
 	public static void main(String[] args){
 		Solution solution = new Solution();
 		TreeNode root = new TreeNode(new Integer[]{1, null, 2});
