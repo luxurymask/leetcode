@@ -63,12 +63,30 @@ public class Solution {
 		return result;
 	}
 	
+	/**
+	 * 137. Single Number II
+	 * @author yfcheng 's idea.
+	 * @param nums
+	 * @return
+	 */
+	public int singleNumberII(int[] nums) {
+		int result = 0;
+		for(int i = 0;i < 32;i++){
+			int count = 0;
+			for(int num : nums){
+				if(((num >> i) & 1) != 0) count++;
+			}
+			if(count % 3 != 0){
+				result |= (1 << i);
+			}
+		}
+		return result;
+    }
+
 	public static void main(String[] args){
 		Solution s = new Solution();
-		int[] array = new int[]{1, 2, 1, 3, 2, 5};
-		int[] result = s.singleNumberIII(array);
-		for(int i : result){
-			System.out.println(i);
-		}
+		int[] array = new int[]{1};
+		int result = s.singleNumberII(array);
+		System.out.println(result);
 	}
 }
