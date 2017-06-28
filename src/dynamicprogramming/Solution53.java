@@ -18,11 +18,8 @@ public class Solution53 {
 		int max = dp[0];
 		int lastNum = max;
     	int dpValue;
-    	int currentNum;
-		
         for(int i = 1;i < nums.length;i++){
-        	currentNum = nums[i];
-        	dpValue = currentNum;
+        	dpValue = nums[i];
         	if(lastNum > 0) dpValue += lastNum;
         	
         	dp[i] = dpValue;
