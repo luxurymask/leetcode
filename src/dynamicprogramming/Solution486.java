@@ -20,7 +20,7 @@ public class Solution486 {
 	/**
 	 * DP solution.
 	 * No data compression.
-	 * 
+	 * half of the space is wasted.
 	 * @param nums
 	 * @return
 	 */
