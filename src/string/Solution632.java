@@ -2,13 +2,13 @@ package string;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
 /**
  * 632. Smallest Range
  * @author liuxl
+ * 需要取最大值／最小值的时候O(n)TLE就应该试试O(logn), 甚至第一手就该选择优先队列。
  *
  */
 public class Solution632 {
