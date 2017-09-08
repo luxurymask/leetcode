@@ -3,8 +3,9 @@ package string;
 public class Solution657 {
 	public boolean judgeCircle(String moves) {
         int x = 0, y = 0;
-        for(int k = 0;k < moves.length();k++){
-        	char c = moves.charAt(k);
+        char[] array = moves.toCharArray();
+        for(int k = 0;k < array.length;k++){
+        	char c = array[k];
         	switch(c){
         		case 'L' : x--; break;
         		case 'R' : x++; break;
