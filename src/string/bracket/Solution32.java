@@ -1,4 +1,4 @@
-package string.braket;
+package string.bracket;
 
 import java.util.Stack;
 
